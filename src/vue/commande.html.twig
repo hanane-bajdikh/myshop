@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Commande validée
+{% endblock %}
+
+{% block contenu %}
+  <div class="container text-center my-5">
+    {% if form.valide %}
+      <h2 class="text-success mb-3">Commande confirmée ✅</h2>
+      <p class="lead">Merci pour votre achat sur <strong>SHOP-SHOP</strong> !</p>
+      <p>Montant total : <strong>{{ form.montant|number_format(2, '.', ' ') }} €</strong></p>
+      <a href="index.php?page=produit" class="btn btn-primary mt-3">Continuer vos achats</a>
+    {% else %}
+      <h2 class="text-danger mb-3">Erreur ❌</h2>
+      <p>{{ form.message }}</p>
+      <a href="index.php?page=panier" class="btn btn-secondary mt-3">Retour au panier</a>
+    {% endif %}
+  </div>
+{% endblock %}

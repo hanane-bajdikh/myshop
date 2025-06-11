@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Validation du compte
+{% endblock %}
+
+{% block contenu %}
+  <div class="container text-center my-5">
+    {% if form.valide %}
+      <h2 class="text-success mb-3">Compte validé ✅</h2>
+      <p>{{ form.message }}</p>
+      <a href="index.php?page=connexion" class="btn btn-success mt-3">Se connecter</a>
+    {% else %}
+      <h2 class="text-danger mb-3">Erreur de validation ❌</h2>
+      <p>{{ form.message }}</p>
+      <a href="index.php?page=accueil" class="btn btn-outline-secondary mt-3">Retour à l’accueil</a>
+    {% endif %}
+  </div>
+{% endblock %}

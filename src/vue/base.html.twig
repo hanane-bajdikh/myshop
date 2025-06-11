@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MyShop{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+    .produit-hover img {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .produit-hover:hover img {
+      transform: scale(1.05);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header avec menu -->
+  <header class="bg-dark text-white py-3">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+      <div class="h4 m-0">MyShop</div>
+      <nav class="d-flex align-items-center">
+        <a href="index.php?page=accueil" class="btn btn-outline-light btn-sm me-2">Accueil</a>
+
+        <!-- Menu Vêtements -->
+        <div class="btn-group me-2">
+          <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+            Vêtements
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="index.php?page=hauts">Hauts</a></li>
+            <li><a class="dropdown-item" href="index.php?page=bas">Bas</a></li>
+            <li><a class="dropdown-item" href="index.php?page=ensembles">Ensembles</a></li>
+            <li><a class="dropdown-item" href="index.php?page=robes">Robes</a></li>
+          </ul>
+        </div>
+
+        <!-- Menu Compte -->
+        {% if session.login is defined %}
+        <div class="btn-group me-2">
+          <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-person"></i> Mon compte
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="index.php?page=compte">Espace client</a></li>
+            <li><a class="dropdown-item text-danger" href="index.php?page=deconnexion">Déconnexion</a></li>
+          </ul>
+        </div>
+        {% else %}
+        <a href="index.php?page=connexion" class="btn btn-outline-light btn-sm me-2">
+          <i class="bi bi-person"></i> Compte
+        </a>
+        {% endif %}
+
+        <!-- Lien Panier -->
+        <a href="index.php?page=panier" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-cart"></i> Panier
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% block contenu %}{% endblock %}
+  </main>
+
+  <footer class="bg-light text-center py-3">
+    <p class="mb-0">&copy; {{ "now"|date("Y") }} MyShop — Tous droits réservés</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

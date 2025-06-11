@@ -1,0 +1,13 @@
+# Forcer l'encodage UTF-8
+AddDefaultCharset UTF-8
+
+# Activation de la réécriture d’URL
+RewriteEngine On
+
+# Rediriger toutes les requêtes vers index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Gérer les erreurs personnalisées (facultatif)
+ErrorDocument 404 /index.php?page=erreur

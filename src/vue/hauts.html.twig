@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hauts - MyShop{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Nos hauts</h2>
+
+  {% if hauts is empty %}
+    <p class="text-center text-muted">Aucun produit disponible dans cette catégorie pour le moment.</p>
+  {% else %}
+    <div class="row">
+      {% for produit in hauts %}
+        <div class="col-md-3 col-sm-6 mb-4">
+          <div class="card h-100 border-0 shadow-sm produit-hover">
+            <a href="index.php?page=fiche&id={{ produit.id }}">
+              <img src="images/{{ produit.image }}" class="card-img-top" alt="{{ produit.designation }}">
+            </a>
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ produit.designation }}</h5>
+              <p class="card-text"><strong>{{ produit.prix }} €</strong></p>
+              <a href="index.php?page=fiche&id={{ produit.id }}" class="btn btn-dark btn-sm mt-2">Voir le produit</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

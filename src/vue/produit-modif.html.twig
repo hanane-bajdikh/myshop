@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Modifier un produit
+{% endblock %}
+
+{% block contenu %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Modifier un produit</h2>
+
+    {% if form.message is defined %}
+      <div class="alert alert-{{ form.valide ? 'success' : 'danger' }}">
+        {{ form.message }}
+      </div>
+    {% endif %}
+
+    {% if form.produit is defined %}
+      <form action="index.php?page=produitModif" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ form.produit.id }}">
+
+        <div class="mb-3">
+          <label for="designation" class="form-label">Désignation</label>
+          <input type="text" name="designation" id="designation" class="form-control" value="{{ form.produit.designation }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="description" id="description" class="form-control" required>{{ form.produit.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="prix" class="form-label">Prix (€)</label>
+          <input type="number" step="0.01" name="prix" id="prix" class="form-control" value="{{ form.produit.prix }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Image (laisser vide pour conserver l'actuelle)</label>
+          <input type="file" name="image" id="image" class="form-control">
+        </div>
+
+        {% if form.produit.image is not empty %}
+          <div class="mb-3">
+            <img src="public/images/{{ form.produit.image }}" alt="Image actuelle" style="max-width: 200px;">
+            <p class="text-muted">Image actuelle : {{ form.produit.image }}</p>
+          </div>
+        {% endif %}
+
+        <button type="submit" name="btModifier" class="btn btn-primary">Enregistrer</button>
+        <a href="index.php?page=produit" class="btn btn-secondary">Annuler</a>
+      </form>
+    {% else %}
+      <div class="alert alert-danger text-center">Produit introuvable.</div>
+    {% endif %}
+  </div>
+{% endblock %}

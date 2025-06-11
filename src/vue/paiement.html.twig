@@ -1,0 +1,66 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Paiement - MyShop{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <h2 class="mb-4 text-center">Paiement</h2>
+  <div class="row">
+    <!-- Infos client et livraison -->
+    <div class="col-md-7">
+      <div class="card p-4 mb-4">
+        <h4>Informations client</h4>
+        <p><strong>Nom :</strong> {{ utilisateur.nom }}</p>
+        <p><strong>Prénom :</strong> {{ utilisateur.prenom }}</p>
+        <p><strong>Email :</strong> {{ utilisateur.email }}</p>
+
+        <h4 class="mt-4">Adresse de livraison</h4>
+        <form method="post" action="index.php?page=valider_paiement">
+          <div class="mb-3">
+            <label for="adresse" class="form-label">Adresse</label>
+            <input type="text" class="form-control" name="adresse" id="adresse" required>
+          </div>
+          <div class="mb-3">
+            <label for="ville" class="form-label">Ville</label>
+            <input type="text" class="form-control" name="ville" id="ville" required>
+          </div>
+          <div class="mb-3">
+            <label for="code_postal" class="form-label">Code postal</label>
+            <input type="text" class="form-control" name="code_postal" id="code_postal" required>
+          </div>
+    </div>
+    </div>
+
+    <!-- Récapitulatif commande -->
+    <div class="col-md-5">
+      <div class="card p-4">
+        <h4>Récapitulatif de la commande</h4>
+        <ul class="list-group list-group-flush">
+          {% for produit in liste %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ produit.designation }} ({{ produit.taille }}) x{{ produit.quantite }}
+              <span>{{ (produit.prix * produit.quantite)|number_format(2, '.', ' ') }} €</span>
+            </li>
+          {% endfor %}
+        </ul>
+        <h5 class="mt-3 text-end">Total : <strong>{{ total|number_format(2, '.', ' ') }} €</strong></h5>
+      </div>
+
+      <!-- Paiement -->
+      <div class="card p-4 mt-4">
+        <h4>Méthode de paiement</h4>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="paiement" id="carte" value="carte" checked>
+          <label class="form-check-label" for="carte">Carte bancaire</label>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="radio" name="paiement" id="paypal" value="paypal">
+          <label class="form-check-label" for="paypal">PayPal</label>
+        </div>
+        <button type="submit" class="btn btn-dark w-100">Valider et payer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

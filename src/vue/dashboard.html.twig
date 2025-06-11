@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - MyShop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #212529 !important;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #212529;
+        }
+        
+        .stats-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stats-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+        
+        .admin-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #212529;
+            margin: 0;
+        }
+        
+        .btn-primary {
+            background-color: #212529;
+            border-color: #212529;
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #000;
+            border-color: #000;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #495057;
+            padding: 1rem;
+        }
+        
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 15px;
+        }
+        
+        .btn-action {
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.25rem;
+        }
+        
+        .alert-item, .order-item {
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .order-item {
+            border-left-color: #28a745;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #212529;
+            box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.25);
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notifications -->
+    <div class="toast-container"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">MyShop</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php?page=admin">Administration</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-shield me-1"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.php?page=compte">Mon compte</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.php?page=deconnexion">Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <h1 class="admin-title">
+                <i class="fas fa-tachometer-alt me-2"></i>Tableau de bord Administrateur
+            </h1>
+            <p class="mb-0">Gérez votre boutique MyShop en temps réel</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card" onclick="showSection('produits')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stats-number">{{ stats.total_produits }}</div>
+                            <div class="stats-label">Produits</div>
+                        </div>
+                        <i class="fas fa-boxes stats-icon text-primary"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card" onclick="showSection('commandes')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stats-number">{{ stats.total_commandes }}</div>
+                            <div class="stats-label">Commandes</div>
+                        </div>
+                        <i class="fas fa-shopping-cart stats-icon text-success"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card" onclick="showSection('utilisateurs')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stats-number">{{ stats.total_utilisateurs }}</div>
+                            <div class="stats-label">Clients</div>
+                        </div>
+                        <i class="fas fa-users stats-icon text-info"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card" onclick="showSection('statistiques')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stats-number">{{ stats.ca_mois }}€</div>
+                            <div class="stats-label">CA du mois</div>
+                        </div>
+                        <i class="fas fa-euro-sign stats-icon text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Produits -->
+        <div id="section-produits" class="admin-section">
+            <div class="section-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="section-title">
+                        <i class="fas fa-boxes me-2"></i>Gestion des Produits
+                    </h3>
+                    <button class="btn btn-primary" onclick="showAddProductModal()">
+                        <i class="fas fa-plus me-2"></i>Ajouter un produit
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Catégorie</th>
+                            <th>Prix</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in produits %}
+                        <tr>
+                            <td>
+                                <img src="{{ produit.image ? 'images/' ~ produit.image : 'https://via.placeholder.com/50' }}" 
+                                     alt="{{ produit.designation }}" class="product-img">
+                            </td>
+                            <td>
+                                <strong>{{ produit.designation }}</strong>
+                                {% if produit.description %}
+                                    <br><small class="text-muted">{{ produit.description }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge {% if produit.categorie == 'robes' %}bg-primary{% elseif produit.categorie == 'hauts' %}bg-info{% elseif produit.categorie == 'bas' %}bg-secondary{% else %}bg-success{% endif %}">
+                                    {{ produit.categorie|capitalize }}
+                                </span>
+                            </td>
+                            <td><strong>{{ produit.prix }}€</strong></td>
+                            <td>
+                                <span class="badge {% if produit.stock == 0 %}bg-danger{% elseif produit.stock <= 5 %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ produit.stock }}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" onclick="editProduct({{ produit.id }})" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-action" onclick="deleteProduct({{ produit.id }})" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section Commandes -->
+        <div id="section-commandes" class="admin-section" style="display: none;">
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-shopping-cart me-2"></i>Gestion des Commandes
+                </h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>N° Commande</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandesRecentes %}
+                        <tr>
+                            <td><strong>#{{ commande.id }}</strong></td>
+                            <td>{{ commande.nom }} {{ commande.prenom }}<br><small>{{ commande.email }}</small></td>
+                            <td>{{ commande.date|date('d/m/Y') }}</td>
+                            <td><strong>{{ commande.montant }}€</strong></td>
+                            <td>
+                                <span class="badge {% if commande.etat == 0 %}bg-warning{% elseif commande.etat == 1 %}bg-success{% elseif commande.etat == 2 %}bg-info{% else %}bg-danger{% endif %}">
+                                    {% if commande.etat == 0 %}En attente{% elseif commande.etat == 1 %}Confirmée{% elseif commande.etat == 2 %}Expédiée{% else %}Annulée{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <select class="form-select form-select-sm" onchange="changeOrderStatus({{ commande.id }}, this.value)">
+                                    <option value="0" {% if commande.etat == 0 %}selected{% endif %}>En attente</option>
+                                    <option value="1" {% if commande.etat == 1 %}selected{% endif %}>Confirmée</option>
+                                    <option value="2" {% if commande.etat == 2 %}selected{% endif %}>Expédiée</option>
+                                    <option value="3" {% if commande.etat == 3 %}selected{% endif %}>Annulée</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section Utilisateurs -->
+        <div id="section-utilisateurs" class="admin-section" style="display: none;">
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-users me-2"></i>Gestion des Utilisateurs
+                </h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Commandes</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in utilisateursRecents %}
+                        <tr>
+                            <td>{{ user.nom }} {{ user.prenom }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.nb_commandes }}</td>
+                            <td>
+                                <span class="badge {% if user.valider == 1 %}bg-success{% else %}bg-warning{% endif %}">
+                                    {% if user.valider == 1 %}Actif{% else %}En attente{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-action" title="Voir profil">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section Statistiques -->
+        <div id="section-statistiques" class="admin-section" style="display: none;">
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-line me-2"></i>Statistiques et Alertes
+                </h3>
+            </div>
+            <div class="row p-3">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Alertes Stock</h5>
+                    {% for produit in produitsRupture %}
+                    <div class="alert-item">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ produit.designation }}</span>
+                            <span class="badge {% if produit.stock == 0 %}bg-danger{% else %}bg-warning{% endif %}">
+                                {% if produit.stock == 0 %}Rupture{% else %}Stock faible{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-clock text-info me-2"></i>Commandes Récentes</h5>
+                    {% for commande in commandesRecentes|slice(0, 5) %}
+                    <div class="order-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>Commande #{{ commande.id }}</strong>
+                                <br><small class="text-muted">{{ commande.nom }} {{ commande.prenom }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ commande.montant }}€</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ajouter/Modifier Produit -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalTitle">
+                        <i class="fas fa-plus me-2"></i>Ajouter un produit
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId" name="id">
+                        <input type="hidden" id="imageActuelle" name="image_actuelle">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom du produit *</label>
+                                <input type="text" id="designation" name="designation" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Catégorie *</label>
+                                <select id="categorie" name="categorie" class="form-select" required>
+                                    <option value="">Choisir une catégorie</option>
+                                    <option value="robes">Robes</option>
+                                    <option value="hauts">Hauts</option>
+                                    <option value="bas">Bas</option>
+                                    <option value="ensembles">Ensembles</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prix (€) *</label>
+                                <input type="number" id="prix" name="prix" class="form-control" step="0.01" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Stock *</label>
+                                <input type="number" id="stock" name="stock" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Image</label>
+                                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                                <div id="currentImage" class="mt-2" style="display: none;">
+                                    <img id="currentImagePreview" src="" alt="Image actuelle" style="max-width: 100px; border-radius: 8px;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variables globales avec les données de Twig
+        let produits = {{ produits|json_encode|raw }};
+        let currentEditingProduct = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Afficher la section produits par défaut
+            showSection('produits');
+        });
+
+        // Navigation entre sections
+        function showSection(section) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+            // Afficher la section demandée
+            document.getElementById('section-' + section).style.display = 'block';
+        }
+
+        // Afficher le modal d'ajout de produit
+        function showAddProductModal() {
+            currentEditingProduct = null;
+            document.getElementById('productModalTitle').innerHTML = '<i class="fas fa-plus me-2"></i>Ajouter un produit';
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('imageActuelle').value = '';
+            document.getElementById('currentImage').style.display = 'none';
+            
+            const modal = new bootstrap.Modal(document.getElementById('productModal'));
+            modal.show();
+        }
+
+        // Modifier un produit
+        function editProduct(id) {
+            const produit = produits.find(p => p.id == id);
+            if (!produit) return;
+            
+            currentEditingProduct = produit;
+            document.getElementById('productModalTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Modifier le produit';
+            
+            // Remplir le formulaire
+            document.getElementById('productId').value = produit.id;
+            document.getElementById('designation').value = produit.designation;
+            document.getElementById('categorie').value = produit.categorie;
+            document.getElementById('prix').value = produit.prix;
+            document.getElementById('stock').value = produit.stock;
+            document.getElementById('description').value = produit.description || '';
+            document.getElementById('imageActuelle').value = produit.image || '';
+            
+            // Afficher l'image actuelle si elle existe
+            if (produit.image) {
+                document.getElementById('currentImage').style.display = 'block';
+                document.getElementById('currentImagePreview').src = 'images/' + produit.image;
+            } else {
+                document.getElementById('currentImage').style.display = 'none';
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('productModal'));
+            modal.show();
+        }
+
+        // Supprimer un produit
+        function deleteProduct(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
+            
+            const formData = new FormData();
+            formData.append('action', 'supprimer_produit');
+            formData.append('id', id);
+            
+            fetch('index.php?page=admin', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Succès', data.message, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showToast('Erreur', data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showToast('Erreur', 'Une erreur est survenue', 'danger');
+            });
+        }
+
+        // Sauvegarder un produit
+        function saveProduct() {
+            const form = document.getElementById('productForm');
+            const formData = new FormData();
+            
+            // Déterminer l'action
+            const action = currentEditingProduct ? 'modifier_produit' : 'ajouter_produit';
+            formData.append('action', action);
+            
+            // Ajouter tous les champs du formulaire
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'file') {
+                    if (input.files[0]) {
+                        formData.append(input.name, input.files[0]);
+                    }
+                } else {
+                    formData.append(input.name, input.value);
+                }
+            });
+            
+            fetch('index.php?page=admin', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Succès', data.message, 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showToast('Erreur', data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showToast('Erreur', 'Une erreur est survenue', 'danger');
+            });
+        }
+
+        // Changer le statut d'une commande
+        function changeOrderStatus(id, status) {
+            const formData = new FormData();
+            formData.append('action', 'changer_statut_commande');
+            formData.append('id', id);
+            formData.append('statut', status);
+            
+            fetch('index.php?page=admin', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Succès', data.message, 'success');
+                } else {
+                    showToast('Erreur', data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showToast('Erreur', 'Une erreur est survenue', 'danger');
+            });
+        }
+
+        // Afficher les notifications toast
+        function showToast(title, message, type) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="fas fa-${type === 'success' ? 'check-circle text-success' : 'exclamation-circle text-danger'} me-2"></i>
+                        <strong class="me-auto">${title}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toast = new bootstrap.Toast(document.getElementById(toastId));
+            toast.show();
+            
+            // Supprimer le toast après 5 secondes
+            setTimeout(() => {
+                const toastElement = document.getElementById(toastId);
+                if (toastElement) {
+                    toastElement.remove();
+                }
+            }, 5000);
+        }
+
+        // Gérer la soumission du formulaire avec Enter
+        document.getElementById('productForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saveProduct();
+            }
+        });
+    </script>
+</body>
+</html>

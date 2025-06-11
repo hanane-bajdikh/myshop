@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - MyShop{% endblock %}
+
+{% block contenu %}
+
+<!-- Bannière principale -->
+<section style="position: relative; text-align: center;">
+  <img src="images/accueil.webp" alt="Bannière" class="img-fluid w-100" style="max-height: 90vh; object-fit: cover;">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: black;">
+    <h1 style="font-size: 2.5rem;">COLLECTION ÉTÉ</h1>
+    <a href="index.php?page=robes" class="btn btn-dark mt-3">DÉCOUVRIR</a>
+  </div>
+</section>
+
+<!-- Produits coup de cœur -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Nos coups de cœur</h2>
+  <div class="row justify-content-center">
+    {% for produit in produits %}
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm produit-hover">
+          <a href="index.php?page=fiche&id={{ produit.id }}">
+            <img src="images/{{ produit.image }}" class="card-img-top" alt="{{ produit.designation }}" style="height: 300px; object-fit: cover;">
+          </a>
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ produit.designation }}</h5>
+            <p class="card-text"><strong>{{ produit.prix }} €</strong></p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Grande image finale -->
+<section>
+  <img src="images/accueil2.webp" class="img-fluid w-100" alt="Look final" style="max-height: 100vh; object-fit: cover;">
+</section>
+
+<style>
+  .produit-hover img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .produit-hover:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.designation }} - MyShop{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <div class="row">
+    <!-- Image produit -->
+    <div class="col-md-6">
+      <img src="images/{{ produit.image }}" alt="{{ produit.designation }}" class="img-fluid w-100" style="object-fit: cover;">
+    </div>
+
+    <!-- Détails produit -->
+    <div class="col-md-6">
+      <h2>{{ produit.designation }}</h2>
+      <p class="text-muted">{{ produit.description }}</p>
+      <h4 class="text-dark">{{ produit.prix }} €</h4>
+
+      <!-- Formulaire ajout panier -->
+      <form method="post" action="index.php?page=ajouterpanier">
+        <div class="mb-3">
+          <label for="taille" class="form-label">Taille</label>
+          <select name="taille" id="taille" class="form-select" required>
+              <option value="">-- Choisir une taille --</option>
+              {% for taille in tailles %}
+                <option value="{{ taille.id }}">{{ taille.nom }}</option>
+              {% endfor %}
+          </select>
+        </div>
+
+        <!-- Input caché pour ID produit -->
+        <input type="hidden" name="id_produit" value="{{ produit.id }}">
+
+        <button type="submit" class="btn btn-dark">Ajouter au panier</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

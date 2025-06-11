@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Ajouter un produit
+{% endblock %}
+
+{% block contenu %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Ajouter un nouveau produit</h2>
+
+    {% if form.message is defined %}
+      <div class="alert alert-{{ form.valide ? 'success' : 'danger' }}">
+        {{ form.message }}
+      </div>
+    {% endif %}
+
+    <form action="index.php?page=produitAjout" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="designation" class="form-label">Désignation</label>
+        <input type="text" name="designation" id="designation" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="prix" class="form-label">Prix (€)</label>
+        <input type="number" step="0.01" name="prix" id="prix" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" name="image" id="image" class="form-control" required>
+      </div>
+
+      <button type="submit" name="btAjout" class="btn btn-primary">Ajouter le produit</button>
+      <a href="index.php?page=produit" class="btn btn-secondary">Annuler</a>
+    </form>
+  </div>
+{% endblock %}

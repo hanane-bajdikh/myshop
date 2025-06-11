@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titre }} - MyShop{% endblock %}
+
+{% block contenu %}
+<section class="container my-5">
+  <h2 class="text-center mb-4">{{ titre }}</h2>
+  <div class="row justify-content-center">
+    {% for produit in produits %}
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm produit-hover">
+        <a href="index.php?page=ficheProduit&id={{ produit.id }}">
+          <img src="public/images/{{ produit.image }}" class="card-img-top" alt="{{ produit.designation }}">
+        </a>
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ produit.designation }}</h5>
+          <p class="card-text"><strong>{{ produit.prix }} €</strong></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

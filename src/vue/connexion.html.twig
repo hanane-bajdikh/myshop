@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - MyShop{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Espace Client</h2>
+  <form method="post" action="?page=connexion" class="mx-auto" style="max-width: 400px;">
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input type="email" class="form-control" name="email" id="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="mdp" class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" name="mdp" id="mdp" required>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-dark w-100">Connexion</button>
+    </div>
+    <div class="text-center mt-3">
+      <a href="?page=inscrire">Pas encore de compte ? Inscrivez-vous</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

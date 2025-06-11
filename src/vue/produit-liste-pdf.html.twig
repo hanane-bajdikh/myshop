@@ -1,0 +1,43 @@
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  th {
+    background-color: #f0f0f0;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 18pt;
+  }
+</style>
+
+<h1>Liste des produits - SHOP-SHOP</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Désignation</th>
+      <th>Description</th>
+      <th>Prix (€)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for produit in liste %}
+      <tr>
+        <td>{{ produit.designation }}</td>
+        <td>{{ produit.description }}</td>
+        <td>{{ produit.prix|number_format(2, '.', ' ') }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

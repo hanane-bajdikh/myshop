@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Ensembles - MyShop{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Nos Ensembles</h2>
+  <div class="row justify-content-center">
+    {% for produit in produits %}
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="index.php?page=fiche&id={{ produit.id }}" class="text-decoration-none text-dark">
+        <div class="card h-100 border-0 shadow-sm produit-hover">
+          <img src="images/{{ produit.image }}" class="card-img-top" alt="{{ produit.designation }}">
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ produit.designation }}</h5>
+            <p class="card-text"><strong>{{ produit.prix }} €</strong></p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

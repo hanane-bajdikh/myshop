@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Recherche
+{% endblock %}
+
+{% block contenu %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Recherche de produits</h2>
+
+    <form method="post" action="index.php?page=recherche" class="row g-3 mb-4">
+      <div class="col-md-9">
+        <input type="text" name="motcle" class="form-control" placeholder="Rechercher par mot-clé..." required>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+      </div>
+    </form>
+
+    {% if form.message is defined %}
+      <div class="alert alert-{{ form.valide ? 'success' : 'danger' }}">
+        {{ form.message }}
+      </div>
+    {% endif %}
+
+    {% if liste is not empty %}
+      <div class="row">
+        {% for produit in liste %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              {% if produit.image %}
+                <img src="public/images/{{ produit.image }}" class="card-img-top" alt="{{ produit.designation }}" style="height: 200px; object-fit: cover;">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ produit.designation }}</h5>
+                <p class="card-text">{{ produit.description|length > 100 ? produit.description|slice(0, 100) ~ '...' : produit.description }}</p>
+                <p><strong>{{ produit.prix }} €</strong></p>
+                <a href="index.php?page=produitfiche&id={{ produit.id }}" class="btn btn-outline-primary btn-sm">Voir le produit</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

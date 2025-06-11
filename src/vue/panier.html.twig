@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  Votre panier - MyShop
+{% endblock %}
+
+{% block contenu %}
+<div class="container my-5">
+  <h2 class="text-center mb-5">Votre panier</h2>
+
+  {% if form.message is defined %}
+    <div class="alert alert-{{ form.valide ? 'success' : 'danger' }}">
+      {{ form.message }}
+    </div>
+  {% endif %}
+
+  {% if liste is not empty %}
+    <form method="post" action="index.php?page=panier">
+      <div class="row">
+        <div class="col-12">
+          {% set montantTotal = 0 %}
+          {% for produit in liste %}
+            {% set total = produit.prix * produit.quantite %}
+            {% set montantTotal = montantTotal + total %}
+
+            <div class="d-flex align-items-center justify-content-between border-bottom py-4">
+              <div class="d-flex align-items-center">
+                <img src="images/{{ produit.image }}" alt="{{ produit.designation }}" width="120" class="me-3 rounded shadow-sm">
+                <div>
+                  <h5 class="mb-1">{{ produit.designation }}</h5>
+                  <p class="text-muted mb-1">{{ produit.prix|number_format(2, '.', ' ') }} €</p>
+                  <p class="mb-0"><strong>Taille :</strong> {{ produit.taille }}</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <input type="number" name="q-{{ produit.id }}-{{ produit.taille }}" value="{{ produit.quantite }}" min="1" class="form-control me-3" style="width: 70px;">
+                <strong class="me-4">{{ total|number_format(2, '.', ' ') }} €</strong>
+                <a href="index.php?page=panier&remove={{ produit.cle }}" class="btn btn-sm btn-outline-danger">🗑</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="text-end mt-4">
+        <h4>Total estimé : <strong>{{ montantTotal|number_format(2, '.', ' ') }} €</strong></h4>
+        <input type="hidden" name="montant" value="{{ montantTotal }}">
+        <div class="mt-3 d-flex justify-content-end gap-3">
+          <button type="submit" name="update" class="btn btn-secondary">Mettre à jour</button>
+          <a href="index.php?page=paiement" class="btn btn-dark">Procéder au paiement</a>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    <div class="alert alert-info text-center">
+      Votre panier est vide.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

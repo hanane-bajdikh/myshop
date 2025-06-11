@@ -1,0 +1,61 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Produits
+{% endblock %}
+
+{% block contenu %}
+  <div class="container">
+    <h2 class="text-center mb-4">Liste des produits</h2>
+
+    {% if form.message is defined %}
+      <div class="alert {{ form.valide ? 'alert-success' : 'alert-danger' }}">
+        {{ form.message }}
+      </div>
+    {% endif %}
+
+    {% if liste is not empty %}
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Désignation</th>
+            <th>Description</th>
+            <th>Prix (€)</th>
+            <th>Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in liste %}
+            <tr>
+              <td>{{ produit.designation }}</td>
+              <td>{{ produit.description }}</td>
+              <td>{{ produit.prix }}</td>
+              <td>
+                {% if produit.image %}
+                  <img src="images/{{ produit.image }}" alt="{{ produit.designation }}" width="100">
+                {% else %}
+                  <span class="text-muted">Aucune</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="index.php?page=fiche&id={{ produit.id }}" class="btn btn-sm btn-info">Voir</a>
+                
+                {% if session.role == 1 %}
+                  <a href="index.php?page=produitModif&id={{ produit.id }}" class="btn btn-sm btn-warning mb-1">Modifier</a>
+                  <a href="index.php?page=produitSupprimer&id={{ produit.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Confirmer la suppression ?')">Supprimer</a>
+                {% else %}
+                  <a href="index.php?page=ajouterPanier&id={{ produit.id }}" class="btn btn-sm btn-success">Ajouter au panier</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-info text-center">
+        Aucun produit trouvé.
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Modifier utilisateur
+{% endblock %}
+
+{% block contenu %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Modifier un utilisateur</h2>
+
+    {% if form.message is defined %}
+      <div class="alert alert-{{ form.valide ? 'success' : 'danger' }}">
+        {{ form.message }}
+      </div>
+    {% endif %}
+
+    {% if form.utilisateur is defined %}
+      <form action="index.php?page=utilisateurModif" method="post">
+        <input type="hidden" name="id" value="{{ form.utilisateur.id }}">
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" id="email" value="{{ form.utilisateur.email }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" name="nom" id="nom" value="{{ form.utilisateur.nom }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="prenom" class="form-label">Prénom</label>
+          <input type="text" name="prenom" id="prenom" value="{{ form.utilisateur.prenom }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="role" class="form-label">Rôle</label>
+          <select name="role" id="role" class="form-select">
+            <option value="1" {% if form.utilisateur.idRole == 1 %}selected{% endif %}>Administrateur</option>
+            <option value="2" {% if form.utilisateur.idRole == 2 %}selected{% endif %}>Client</option>
+          </select>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="valider" name="valider" {% if form.utilisateur.valider %}checked{% endif %}>
+          <label class="form-check-label" for="valider">Compte validé</label>
+        </div>
+
+        <button type="submit" name="btModifier" class="btn btn-primary">Enregistrer les modifications</button>
+        <a href="index.php?page=utilisateur" class="btn btn-secondary">Annuler</a>
+      </form>
+    {% else %}
+      <div class="alert alert-danger text-center">Utilisateur introuvable.</div>
+    {% endif %}
+  </div>
+{% endblock %}

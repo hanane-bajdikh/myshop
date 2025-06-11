@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  {{ parent() }} Maintenance
+{% endblock %}
+
+{% block contenu %}
+  <div class="container text-center my-5">
+    <h2 class="text-danger mb-3">Site en maintenance</h2>
+    <p class="lead">Nous rencontrons un problème de connexion à la base de données.</p>
+    <p>Merci de réessayer plus tard. 🙏</p>
+  </div>
+{% endblock %}
